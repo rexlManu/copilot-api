@@ -10,7 +10,7 @@ import { modelRoutes } from "./routes/models/route"
 export const server = new Hono()
 
 server.use(logger())
-server.use(cors())
+server.use(cors({ origin: "*" }))
 
 // API key middleware for all API endpoints except root
 server.use("/*", apiKeyMiddleware)
