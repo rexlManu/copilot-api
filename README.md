@@ -160,3 +160,26 @@ When using the `--manual` flag, the server will prompt you to approve each incom
 ```
 
 This helps you control usage and monitor requests in real-time.
+
+## API Key Authorization (OpenAI-Compatible)
+
+This API now supports OpenAI-style API key authorization. To secure your endpoints:
+
+1. **Set the API Key in Docker**
+
+   - Pass your API key as an environment variable when running the container:
+     ```sh
+     docker run -e OPENAI_API_KEY=sk-... your-copilot-api-image
+     ```
+   - Or set it in your Dockerfile/compose as `OPENAI_API_KEY`.
+
+2. **Authorize Requests**
+
+   - All API endpoints (except `/`) require the `Authorization` header:
+     ```http
+     Authorization: Bearer sk-...
+     ```
+   - This mimics the OpenAI API client format.
+
+3. **Error Handling**
+   - If the header is missing or the key is incorrect, a 401 Unauthorized error is returned in the OpenAI error format.

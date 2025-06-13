@@ -54,6 +54,9 @@ export async function runServer(options: RunServerOptions): Promise<void> {
   await setupCopilotToken()
   await cacheModels()
 
+  // Load OpenAI-style API key from environment (for request authorization)
+  state.apiToken = process.env.OPENAI_API_KEY
+
   const serverUrl = `http://localhost:${options.port}`
   consola.box(`Server started at ${serverUrl}`)
 

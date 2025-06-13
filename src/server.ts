@@ -2,6 +2,7 @@ import { Hono } from "hono"
 import { cors } from "hono/cors"
 import { logger } from "hono/logger"
 
+import { apiKeyMiddleware } from "./lib/api-key-middleware"
 import { completionRoutes } from "./routes/chat-completions/route"
 import { embeddingRoutes } from "./routes/embeddings/route"
 import { modelRoutes } from "./routes/models/route"
@@ -10,6 +11,9 @@ export const server = new Hono()
 
 server.use(logger())
 server.use(cors())
+
+// API key middleware for all API endpoints except root
+server.use("/*", apiKeyMiddleware)
 
 server.get("/", (c) => c.text("Server running"))
 
