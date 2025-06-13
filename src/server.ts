@@ -18,6 +18,9 @@ server.use(cors({ origin: "*" }))
 // API key middleware for all API endpoints except root
 server.use("/*", apiKeyMiddleware)
 
+// API key middleware for all API endpoints except root
+server.use("/*", apiKeyMiddleware)
+
 server.get("/", (c) => c.text("Server running"))
 
 server.route("/chat/completions", completionRoutes)

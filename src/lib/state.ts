@@ -27,4 +27,5 @@ export const state: State = {
   rateLimitWait: false,
   apiToken: undefined,
   showToken: false,
+  apiToken: undefined,
 }

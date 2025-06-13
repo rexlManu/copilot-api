@@ -264,3 +264,40 @@ bun run start
   - `--rate-limit <seconds>`: Enforces a minimum time interval between requests. For example, `copilot-api start --rate-limit 30` will ensure there's at least a 30-second gap between requests.
   - `--wait`: Use this with `--rate-limit`. It makes the server wait for the cooldown period to end instead of rejecting the request with an error. This is useful for clients that don't automatically retry on rate limit errors.
 - If you have a GitHub business or enterprise plan account with Copilot, use the `--account-type` flag (e.g., `--account-type business`). See the [official documentation](https://docs.github.com/en/enterprise-cloud@latest/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization/managing-github-copilot-access-to-your-organizations-network#configuring-copilot-subscription-based-network-routing-for-your-enterprise-or-organization) for more details.
+- Consider using free models (e.g., Gemini, Mistral, Openrouter) as the `weak-model`
+- Use architect mode sparingly
+- Disable `yes-always` in your aider configuration
+- Be mindful that Claude 3.7 thinking mode consumes more tokens
+
+### Manual Request Approval
+
+When using the `--manual` flag, the server will prompt you to approve each incoming request:
+
+```
+? Accept incoming request? > (y/N)
+```
+
+This helps you control usage and monitor requests in real-time.
+
+## API Key Authorization (OpenAI-Compatible)
+
+This API now supports OpenAI-style API key authorization. To secure your endpoints:
+
+1. **Set the API Key in Docker**
+
+   - Pass your API key as an environment variable when running the container:
+     ```sh
+     docker run -e OPENAI_API_KEY=sk-... your-copilot-api-image
+     ```
+   - Or set it in your Dockerfile/compose as `OPENAI_API_KEY`.
+
+2. **Authorize Requests**
+
+   - All API endpoints (except `/`) require the `Authorization` header:
+     ```http
+     Authorization: Bearer sk-...
+     ```
+   - This mimics the OpenAI API client format.
+
+3. **Error Handling**
+   - If the header is missing or the key is incorrect, a 401 Unauthorized error is returned in the OpenAI error format.
