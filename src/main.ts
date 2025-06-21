@@ -49,10 +49,13 @@ export async function runServer(options: RunServerOptions): Promise<void> {
     consola.info("Using provided GitHub token")
   } else {
     await setupGitHubToken()
-  }
-
-  await setupCopilotToken()
-  await cacheModels()
+  }  await setupCopilotToken()
+  await cacheModels()  // Display token information prominently
+  consola.info("=".repeat(50))
+  consola.success("🚀 GitHub Copilot API has been successfully started!")
+  consola.info(`🔑 Current Copilot Token: ${state.copilotToken}`)
+  consola.info(`🌐 Usage Viewer: http://localhost:${options.port}/public/usage.html`)
+  consola.info("=".repeat(50))
 
   // Load OpenAI-style API key from environment (for request authorization)
   state.apiToken = process.env.OPENAI_API_KEY
